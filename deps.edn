@@ -1,0 +1,12 @@
+{:paths
+ ["src/main"]
+
+ :deps
+ {com.wsscode/pathom  {:mvn/version "2.2.26"}
+  cheshire            {:mvn/version "5.8.1"}
+  clj-time            {:mvn/version "0.15.2"}
+  clj-http            {:mvn/version "3.10.0"}}
+
+ :aliases
+ {:provided
+  {:extra-deps {org.clojure/clojure {:mvn/version "1.10.1"}}}}}
