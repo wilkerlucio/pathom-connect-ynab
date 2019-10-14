@@ -6,14 +6,14 @@
             [com.wsscode.pathom.connect :as pc]
             [com.wsscode.pathom.connect.ynab.entity-adapter :as e]))
 
-(s/def :ynab.budget/id uuid?)
-
 (s/def ::auth-token string?)
 (s/def ::path string?)
 (s/def ::replace map?)
 (s/def ::params map?)
 (s/def ::method keyword?)
 (s/def ::body any?)
+
+(s/def :ynab.budget/id uuid?)
 
 (s/def :ynab.transaction/amount int?)
 (s/def :ynab.transaction/approved boolean?)
