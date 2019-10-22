@@ -78,6 +78,7 @@
 
 (pc/defresolver budget-transactions [env {:keys [ynab.budget/id]}]
   {::pc/input  #{:ynab.budget/id}
+   ::pc/params [::since]
    ::pc/output [{:ynab.budget/transactions
                  [:ynab.account/id
                   :ynab.account/name
