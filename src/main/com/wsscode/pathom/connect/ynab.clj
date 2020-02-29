@@ -95,6 +95,13 @@
         :data :accounts
         (mapv adapt-account))})
 
+(defn safe-uuid
+  [s]
+  (try
+    (uuid s)
+    (catch Throwable e
+      s)))
+
 (defn adapt-transaction [transaction]
   (-> transaction
       (e/namespaced-keys "ynab.transaction")
@@ -104,9 +111,9 @@
                         :ynab.transaction/category-name :ynab.category/name
                         :ynab.transaction/payee-id      :ynab.payee/id
                         :ynab.transaction/payee-name    :ynab.payee/name})
-      (e/update-if :ynab.account/id uuid)
-      (e/update-if :ynab.category/id uuid)
-      (e/update-if :ynab.payee/id uuid)))
+      (e/update-if :ynab.account/id safe-uuid)
+      (e/update-if :ynab.category/id safe-uuid)
+      (e/update-if :ynab.payee/id safe-uuid)))
 
 (pc/defresolver budget-transactions [env {:keys [ynab.budget/id]}]
   {::pc/input  #{:ynab.budget/id}
