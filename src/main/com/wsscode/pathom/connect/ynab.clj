@@ -29,7 +29,7 @@
 (s/def :ynab.transaction/transfer-account-id string?)
 (s/def :ynab.transaction/transfer-transaction-id string?)
 
-(def ::ynab-request
+(s/def ::ynab-request
   (s/keys :req [::path] :opt [::replace ::params]))
 
 (defn uuid [x]
