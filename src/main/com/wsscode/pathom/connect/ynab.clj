@@ -168,8 +168,7 @@
                   :ynab.category-group/deleted
                   :ynab.category-group/hidden
                   :ynab.category-group/id
-                  :ynab.category-group/name]}]
-   }
+                  :ynab.category-group/name]}]}
   {:ynab.budget/category-groups
    (->> (ynab-request env
           {::path    "budgets/{{id}}/categories"
