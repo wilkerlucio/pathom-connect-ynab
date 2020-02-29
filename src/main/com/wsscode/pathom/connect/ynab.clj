@@ -199,6 +199,26 @@
                   :ynab.category/original-category-group-id]}]}
   {:ynab.budget/categories (into [] (mapcat :ynab.category-group/categories) category-groups)})
 
+(pc/defresolver budget-from-id [env {:keys [ynab.budget/id
+                                            ynab/budgets]}]
+  {::pc/input  #{:ynab.budget/id
+                 :ynab/budgets}
+   ::pc/output [{:ynab.budget/date-format [:format]}
+                :ynab.budget/first-month
+                :ynab.budget/id
+                :ynab.budget/last-modified-on
+                :ynab.budget/last-month
+                :ynab.budget/name
+                :ynab.currency-format/currency-symbol
+                :ynab.currency-format/decimal-digits
+                :ynab.currency-format/decimal-separator
+                :ynab.currency-format/display-symbol
+                :ynab.currency-format/example-format
+                :ynab.currency-format/group-separator
+                :ynab.currency-format/iso-code
+                :ynab.currency-format/symbol-first]}
+  (some #(if (= id (:ynab.budget/id %)) %) budgets))
+
 (pc/defresolver category-group-from-id [env {:keys [ynab.category-group/id
                                                     ynab.budget/category-groups]}]
   {::pc/input  #{:ynab.category-group/id
@@ -313,6 +333,7 @@
    budget-transactions
    budget-category-groups
    budget-categories
+   budget-from-id
    category-group-from-id
    category-from-id
    account-from-id
