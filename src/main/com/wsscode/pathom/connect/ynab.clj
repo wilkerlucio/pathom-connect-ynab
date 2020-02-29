@@ -53,23 +53,25 @@
 (defn adapt-budget [budget]
   (-> budget
       (e/update-if :id uuid)
-      (e/namespaced-keys "ynab.budget")))
+      (e/namespaced-keys "ynab.budget")
+      (e/pull-namespaced :ynab.budget/currency-format "ynab.currency-format")))
 
 (pc/defresolver budgets [env {:keys []}]
-  {::pc/output [{:ynab/budgets [{:ynab.budget/currency-format [:currency_symbol
-                                                               :decimal_digits
-                                                               :decimal_separator
-                                                               :display_symbol
-                                                               :example_format
-                                                               :group_separator
-                                                               :iso_code
-                                                               :symbol_first]}
-                                {:ynab.budget/date-format [:format]}
-                                :ynab.budget/first-month
-                                :ynab.budget/id
-                                :ynab.budget/last-modified-on
-                                :ynab.budget/last-month
-                                :ynab.budget/name]}]
+  {::pc/output [{:ynab/budgets
+                 [{:ynab.budget/date-format [:format]}
+                  :ynab.budget/first-month
+                  :ynab.budget/id
+                  :ynab.budget/last-modified-on
+                  :ynab.budget/last-month
+                  :ynab.budget/name
+                  :ynab.currency-format/currency-symbol
+                  :ynab.currency-format/decimal-digits
+                  :ynab.currency-format/decimal-separator
+                  :ynab.currency-format/display-symbol
+                  :ynab.currency-format/example-format
+                  :ynab.currency-format/group-separator
+                  :ynab.currency-format/iso-code
+                  :ynab.currency-format/symbol-first]}]
    }
   {:ynab/budgets
    (->> (ynab-request env
