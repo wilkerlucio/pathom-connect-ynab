@@ -56,7 +56,7 @@
       (e/namespaced-keys "ynab.budget")))
 
 (pc/defresolver budgets [env {:keys []}]
-  {::pc/output [:ynab/budgets [:ynab/budget {:currency-format [:currency_symbol
+  {::pc/output [{:ynab/budgets [{:ynab.budget/currency-format [:currency_symbol
                                                                :decimal_digits
                                                                :decimal_separator
                                                                :display_symbol
@@ -64,12 +64,13 @@
                                                                :group_separator
                                                                :iso_code
                                                                :symbol_first]}
-                               :ynab/budget {:date-format [:format]}
-                               :ynab.budget/first-month
-                               :ynab.budget/id
-                               :ynab.budget/last-modified-on
-                               :ynab.budget/last-month
-                               :ynab.budget/name]]}
+                                {:ynab.budget/date-format [:format]}
+                                :ynab.budget/first-month
+                                :ynab.budget/id
+                                :ynab.budget/last-modified-on
+                                :ynab.budget/last-month
+                                :ynab.budget/name]}]
+   }
   {:ynab/budgets
    (->> (ynab-request env
           {::path "budgets"})
