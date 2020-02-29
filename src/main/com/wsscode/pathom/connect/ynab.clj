@@ -103,7 +103,10 @@
                         :ynab.transaction/category-id   :ynab.category/id
                         :ynab.transaction/category-name :ynab.category/name
                         :ynab.transaction/payee-id      :ynab.payee/id
-                        :ynab.transaction/payee-name    :ynab.payee/name})))
+                        :ynab.transaction/payee-name    :ynab.payee/name})
+      (e/update-if :ynab.account/id uuid)
+      (e/update-if :ynab.category/id uuid)
+      (e/update-if :ynab.payee/id uuid)))
 
 (pc/defresolver budget-transactions [env {:keys [ynab.budget/id]}]
   {::pc/input  #{:ynab.budget/id}
