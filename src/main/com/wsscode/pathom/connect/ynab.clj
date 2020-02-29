@@ -13,7 +13,7 @@
 (s/def ::method keyword?)
 (s/def ::body any?)
 
-(s/def :ynab.budget/id uuid?)
+(s/def :ynab.budget/id string?)
 
 (s/def :ynab.transaction/amount int?)
 (s/def :ynab.transaction/approved boolean?)
@@ -32,9 +32,6 @@
 (s/def ::ynab-request
   (s/keys :req [::path] :opt [::replace ::params]))
 
-(defn uuid [x]
-  (java.util.UUID/fromString x))
-
 (defn replace-vars [template params]
   (str/replace template #"\{\{(.+?)}}" (fn [[_ key]] (str (get params (keyword key))))))
 
@@ -52,7 +49,6 @@
 
 (defn adapt-budget [budget]
   (-> budget
-      (e/update-if :id uuid)
       (e/namespaced-keys "ynab.budget")
       (e/pull-namespaced :ynab.budget/currency-format "ynab.currency-format")))
 
@@ -81,8 +77,6 @@
 
 (defn adapt-account [account]
   (-> account
-      (e/update-if :transfer_payee_id uuid)
-      (e/update-if :id uuid)
       (e/namespaced-keys "ynab.account")))
 
 (pc/defresolver budget-accounts [env {:keys [ynab.budget/id]}]
@@ -95,13 +89,6 @@
         :data :accounts
         (mapv adapt-account))})
 
-(defn safe-uuid
-  [s]
-  (try
-    (uuid s)
-    (catch Throwable e
-      s)))
-
 (defn adapt-transaction [transaction]
   (-> transaction
       (e/namespaced-keys "ynab.transaction")
@@ -110,10 +97,7 @@
                         :ynab.transaction/category-id   :ynab.category/id
                         :ynab.transaction/category-name :ynab.category/name
                         :ynab.transaction/payee-id      :ynab.payee/id
-                        :ynab.transaction/payee-name    :ynab.payee/name})
-      (e/update-if :ynab.account/id safe-uuid)
-      (e/update-if :ynab.category/id safe-uuid)
-      (e/update-if :ynab.payee/id safe-uuid)))
+                        :ynab.transaction/payee-name    :ynab.payee/name})))
 
 (pc/defresolver budget-transactions [env {:keys [ynab.budget/id]}]
   {::pc/input  #{:ynab.budget/id}
